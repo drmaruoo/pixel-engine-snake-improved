@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using PixelEngine;
 
-namespace Examples
+namespace Snake
 {
-    public class Snake : Game
+    public partial class Snake : Game
     {
         private List<SnakeSegment> snakeSegments;
 
@@ -37,31 +37,6 @@ namespace Examples
             SnakeGame.Construct(50, 50, 10, 10, 30);
             SnakeGame.Start();
         }
-
-        private struct SnakeSegment
-        {
-            public int X { get; private set; }
-            public int Y { get; private set; }
-
-            public SnakeSegment(int x, int y)
-            {
-                X = x;
-                Y = y;
-            }
-        }
-
-        private struct Apple
-        {
-            public int X { get; set; }
-            public int Y { get; set; }
-
-            public void SetCoordinates(int x, int y)
-            {
-                X = x;
-                Y = y;
-            }
-        }
-
 
         public Snake() => AppName = "Pixel Engine Snake";
 
@@ -164,7 +139,7 @@ namespace Examples
             if (snakeSegments[0].X == apple.X && snakeSegments[0].Y == apple.Y)
             {
                 score++;
-                RandomizeFood();
+                apple.RandomizeFood(ScreenWidth, ScreenHeight);
 
                 snakeSegments.Add(new SnakeSegment(snakeSegments[snakeSegments.Count - 1].X, snakeSegments[snakeSegments.Count - 1].Y));
             }
@@ -184,17 +159,9 @@ namespace Examples
                 if (GetKey(Key.Enter).Pressed)
                 {
                     ResetGame();
-                    RandomizeFood();
+                    apple.RandomizeFood(ScreenWidth, ScreenHeight);
                     gameStarted = true;
                 }
-            }
-        }
-
-        private void RandomizeFood()
-        {
-            while (GetScreenPixel(apple.X, apple.Y) != backgroundColor)
-            {
-                apple.SetCoordinates(Random(ScreenWidth), Random(ScreenHeight));
             }
         }
     }
